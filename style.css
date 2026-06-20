@@ -209,12 +209,10 @@ p  { color: var(--gray-600); font-size: .97rem; line-height: 1.75; }
 .hero-bg {
   position: absolute;
   inset: 0;
-}
-.hero-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
+  background: linear-gradient(135deg,
+    var(--black) 0%,
+    var(--accent-dark) 55%,
+    var(--pink-dark) 100%);
 }
 .hero-overlay {
   position: absolute;
@@ -603,7 +601,8 @@ p  { color: var(--gray-600); font-size: .97rem; line-height: 1.75; }
   .nav-burger { display: flex; }
 
   .hero-content { flex-direction: column; align-items: flex-start; }
-  .hero-visual { display: none; }
+  .hero-visual { width: 100%; justify-content: center; margin-top: 8px; }
+  .hero-svg { width: clamp(220px, 62vw, 320px); }
 
   .about-grid  { grid-template-columns: 1fr; }
   .about-visual { order: -1; }
