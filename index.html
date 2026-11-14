@@ -253,8 +253,7 @@
     <div class="container cta-inner">
       <h2>Ready to transform your business?</h2>
       <p>Let's build the future together. Reach out and discover what HOLONOX can do for you.</p>
-      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="_captcha" value="false" />
+      <form id="contact-form" class="contact-form">
         <input type="hidden" name="access_key" value="bed34b71-6b45-48e9-b269-cb66d96db364">
         <div class="form-row">
           <div class="form-group">
@@ -271,7 +270,42 @@
           <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Send Message</button>
+        <p id="form-status" style="display:none;margin-top:1rem;font-weight:600;"></p>
       </form>
+      <script>
+        document.getElementById('contact-form').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const form = e.target;
+          const btn = form.querySelector('button[type="submit"]');
+          const status = document.getElementById('form-status');
+          btn.disabled = true;
+          btn.textContent = 'Sending…';
+          const data = Object.fromEntries(new FormData(form));
+          data.botcheck = '';
+          try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify(data)
+            });
+            const json = await res.json();
+            if (json.success) {
+              form.reset();
+              status.style.color = '#4ade80';
+              status.textContent = 'Your message has been sent. We\'ll be in touch soon!';
+            } else {
+              status.style.color = '#f87171';
+              status.textContent = 'Something went wrong. Please try again.';
+            }
+          } catch {
+            status.style.color = '#f87171';
+            status.textContent = 'Network error. Please try again.';
+          }
+          status.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+        });
+      </script>
     </div>
   </section>
 
